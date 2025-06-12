@@ -2,8 +2,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Shopping = require('./models/Shopping');
+const cors = require('cors');
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 mongoose.connect('mongodb://mongo:27017/shopping', { useNewUrlParser: true, useUnifiedTopology: true });
 
