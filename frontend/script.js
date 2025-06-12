@@ -1,4 +1,3 @@
-
 const apiGateway = 'http://localhost:3000';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,14 +9,26 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   if (document.getElementById('productForm')) {
     document.getElementById('productForm').addEventListener('submit', addProduct);
-    const user = localStorage.getItem('user');
-    if (!user) {
-      window.location.href = 'login.html';
-      return;
-    }
-    document.getElementById('userEmail').innerText = `Logged in as: ${user}`;
+  }
+
+  const user = localStorage.getItem('user');
+  if (user) {
+    showMain(user);
+  } else {
+    showAuth();
   }
 });
+
+function showMain(email) {
+  document.getElementById('authSection').style.display = 'none';
+  document.getElementById('mainSection').style.display = 'block';
+  document.getElementById('userEmail').innerText = `Logged in as: ${email}`;
+}
+
+function showAuth() {
+  document.getElementById('authSection').style.display = 'block';
+  document.getElementById('mainSection').style.display = 'none';
+}
 
 function registerUser(e) {
   e.preventDefault();
@@ -28,7 +39,7 @@ function registerUser(e) {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name, email, password })
   }).then(() => {
-    alert('Registered!'); window.location.href = 'login.html';
+    alert('Registered! Please log in.');
   });
 }
 
@@ -42,7 +53,7 @@ function loginUser(e) {
   }).then(res => {
     if (res.status === 200) {
       localStorage.setItem('user', email);
-      window.location.href = 'index.html';
+      showMain(email);
     } else {
       alert('Invalid credentials');
     }
@@ -61,5 +72,5 @@ function addProduct(e) {
 
 function logout() {
   localStorage.removeItem('user');
-  window.location.href = 'login.html';
+  showAuth();
 }

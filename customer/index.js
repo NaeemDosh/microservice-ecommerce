@@ -2,9 +2,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const cors = require('cors');
 const Customer = require('./models/Customer');
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 mongoose.connect('mongodb://mongo:27017/customer', { useNewUrlParser: true, useUnifiedTopology: true });
 
